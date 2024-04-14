@@ -11,7 +11,7 @@ def summarize_new_articles():
     source_articles = repo.get_source_articles_with_no_processed_articles()
     generated_articles = []
     for article in source_articles:
-        result_object = openai_service.create_summary(article.content)
+        result_object = openai_service.create_summary(article.content[0:3000])
         processed_article = ProcessedArticle(
             content=result_object.get('articol'),
             headline=result_object.get('antet'),
@@ -21,11 +21,11 @@ def summarize_new_articles():
             model_name=result_object.get('model'),
             source_article=article
         )
-        generated_articles.append(processed_article)
+        repo.add_article(processed_article)
         print(processed_article.title)
-    success_insert, result = repo.add_articles(generated_articles)
+    # success_insert, result = repo.add_articles(generated_articles)
     print('DONE !')
-    return result if not success_insert else None
+    # return result if not success_insert else None
 
 
 summarize_new_articles()

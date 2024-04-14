@@ -4,10 +4,10 @@ from utils.parserRealitatea import RealitateaParser
 
 
 def main():
-    realitatea_parser = RealitateaParser()
-    realitatea_parser.parse()
-    jurnalul_parser = JurnalulParser()
-    jurnalul_parser.parse()
+    # realitatea_parser = RealitateaParser()
+    # realitatea_parser.parse()
+    # jurnalul_parser = JurnalulParser()
+    # jurnalul_parser.parse()
     embedder = Embedder()
     embedder.embed_all()
 
