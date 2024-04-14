@@ -1,0 +1,17 @@
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+DB_HOST=
+DB_PORT=
+PINECONE=
+OPENAI_KEY=
+OPENAI_ORG=DBest
+OPENAI_MODEL=gpt-3.5-turbo-0125
+TEMPERATURE=0
+MAX_TOKENS=1024
+TOP_P=0.5
+FREQUENCY_PENALTY=0.2
+PRESENCE_PENALTY=0.3
+SYSTEM_PROMPT=Indeplinesti rolul unui jurnalist obiectiv care foloseste doar cuvinte obiective, care citeste articolul prezentat apoi il reformulari pastrand doar informatiile obiective utile. Raspunsul este un JSON de forma {"Articol","Antet","Titlu Obiectiv}
+INPUT_TOKEN_PRICE=1.5
+OUTPUT_TOKEN_PRICE=2
