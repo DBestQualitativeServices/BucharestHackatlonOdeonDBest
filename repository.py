@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
 import dotenv
-from models import Base, SourceArticle
+from models import Base, SourceArticle, ProcessedArticle
 from pprint import pprint
 
 
@@ -69,6 +69,10 @@ class ArticleRepository:
                   .all())
         return result
 
+    def get_all(self):
+        result = self.session.query(SourceArticle).all()
+        return result
+
     def add_embedding(self, source_article_id, embedding):
         try:
             original = (self.session.query(SourceArticle)
@@ -80,8 +84,20 @@ class ArticleRepository:
             self.session.rollback()
             pprint({'message': 'Error updating error in article', 'error': str(e)})
             return False
-
+    def update_category(self, article_id, new_category):
+        try:
+            original = (self.session.query(ProcessedArticle)
+                        .filter(ProcessedArticle.source_article.has(id=article_id))
+                        .order_by(ProcessedArticle.version.desc())
+                        .first())
+            if original is None:
+                print(f"No ProcessedArticle found for article_id {article_id}")
+                return False
+            original.category = new_category
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            pprint({'message': 'Error updating error in article', 'error': str(e)})
+            return False
     def get_source_urls(self):
         return self.session.query(SourceArticle.url).all()
-
-

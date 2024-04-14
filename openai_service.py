@@ -46,5 +46,27 @@ class OpenAiService:
                 'antet': response_text.get('Antet') if 'Antet' in response_text else None,
                 'titlu': response_text.get('Titlu Obiectiv') if 'Titlu Obiectiv' in response_text else None,
                 'price': (cost.get('prompt_tokens') * 1.5 + cost.get('completion_tokens') * 2) / 1000000,
-                'model':self.OPENAI_MODEL
+                'model': self.OPENAI_MODEL
                 }
+
+    def create_category(self, article):
+        response = self.open_ai_client.chat.completions.create(
+            model=self.OPENAI_MODEL,
+            response_format={"type": "json_object"},
+            temperature=0,
+            top_p=self.TOP_P,
+            messages=[
+                {"role": "system",
+                 "content": "Aloca articolul la acea categorie care i se potriveste cel mai bine ['POLITICA',''ECONOMIE','EXTERN','SPORT', 'MONDEN']. Raspunsul sa fie de tip JSON : {'Categorie':}"
+                 },
+                {"role": "user",
+                 "content": article.content}]
+        )
+        response_text = json.loads(response.choices[0].message.content)
+        categorie = response_text.get('Categorie') if response_text.get('Categorie') else None
+        if not categorie:
+            categorie = response_text.get('CATEGORIE') if response_text.get('CATEGORIE') else "ACTUALITATE"
+        print(f"{article.id},{categorie}")
+        return categorie
+
+
